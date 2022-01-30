@@ -1,0 +1,57 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'java'
+}
+
+group 'org.tipsytapir'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    mavenCentral()
+    maven {
+        url = uri("https://papermc.io/repo/repository/maven-public/")
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib"
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    compileOnly("io.papermc.paper:paper-api:1.18.1-R0.1-SNAPSHOT")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+}
+
+processResources {
+    doFirst {
+        file("$buildDir/resources/main").listFiles().each {
+            it.delete()
+        }
+    }
+}
+
+tasks.register('copyPlugin', Copy) {
+    from "$buildDir/libs/"
+    include "*-all.jar"
+    into "$projectDir/test-server/plugins"
+}
+
+tasks.named("jar") {
+    finalizedBy("copyPlugin")
+}
+
+shadowJar {
+    dependencies {
+        include(dependency("org.jetbrains.kotlin:kotlin-stdlib"))
+    }
+}
+
+jar.dependsOn shadowJar

@@ -1,0 +1,9 @@
+name: SetHome # the plugins name as it should appear in the plugin list /pl
+version: 1.0 # the plugin's version
+author: TipsyTapir
+main: me.tipsytapir.sethome.Main
+api-version: 1.18
+commands:
+  sethome:
+    description: Set your  home
+    usage: /sethome
