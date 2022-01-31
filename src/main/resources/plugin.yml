@@ -7,3 +7,6 @@ commands:
   sethome:
     description: Set your  home
     usage: /sethome
+  home:
+    description: Teleport to your home
+    usage: /home
